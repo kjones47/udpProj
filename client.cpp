@@ -9,7 +9,7 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
 
-#define PORT	 8083
+#define PORT	 8088
 
 
 int main() { 
@@ -17,7 +17,8 @@ int main() {
 	socklen_t len;
 	char buffer[1024];
 	struct sockaddr_in servaddr;
-	char hello[20] = "Ping from client";
+	//char hellooo[20] = "Ping from client";
+ char hello[20] = "Hello from client"; 
 	
 	//make socket
 	if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0){
@@ -30,8 +31,8 @@ int main() {
 	servaddr.sin_addr.s_addr = INADDR_ANY; // localhost
 	servaddr.sin_port = htons(PORT); // port number
 	
-	sendto(sockfd, (const char *)hello, strlen(hello), 
-			MSG_CONFIRM, (const struct sockaddr *) &servaddr, len);
+	sendto(sockfd, (char *)hello, strlen(hello), 
+			MSG_CONFIRM, (const struct sockaddr *) &servaddr,  len);
 	printf("Hello message here sent.\n"); 
 
 	n = recvfrom(sockfd, (char *)buffer, sizeof(buffer),
