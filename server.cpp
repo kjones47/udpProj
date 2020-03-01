@@ -12,7 +12,7 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
 
-#define PORT	 8083
+#define PORT	 8088
 
 
 int main() { 
@@ -20,6 +20,7 @@ int main() {
 	socklen_t len;
 	char buffer[1024];
 	struct sockaddr_in servaddr, cliaddr; 
+char hello[20] = "Hello from server"; 
 	
 	// Create a UDP socket
 	// Notice the use of SOCK_DGRAM for UDP packets
@@ -41,21 +42,20 @@ int main() {
 	}
 	
 	// random generator
-	srand(time(0));
-
+  	while (1) {
 		//Receive the client packet along with the address it is coming from
 		n = recvfrom(sockfd, (char *)buffer, sizeof(buffer), 
 			MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 		buffer[n] = '\0';
-		printf("Client : %s\n", buffer); 
+		printf("server recived message");
+
 		//If a random number in the range of 0 to 10 is less than 4,
 		//we consider the packet lost and do not respond
-	  //if (rand()%10 < 4) continue;
+		if (rand()%10 < 4) continue;
 
 		//Otherwise, the server responds
 		sendto(sockfd, (const char *)buffer, strlen(buffer), 
 			MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
-		printf("Replysent.\n");  
-
+	}
 	return 0; 
 } 
